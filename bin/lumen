@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Launcher for running Lumen from a source checkout.
+set -euo pipefail
+
+# Resolve symlinks so this can be linked into ~/.local/bin.
+source="${BASH_SOURCE[0]}"
+while [[ -L "$source" ]]; do
+  base="$(cd -P -- "$(dirname -- "$source")" && pwd)"
+  source="$(readlink "$source")"
+  [[ "$source" != /* ]] && source="$base/$source"
+done
+
+root="$(cd -P -- "$(dirname -- "$source")/.." && pwd)"
+python="$root/.venv/bin/python"
+
+if [[ ! -x "$python" ]]; then
+  printf 'Lumen: virtualenv missing. Run %s/setup.sh first.\n' "$root" >&2
+  exit 1
+fi
+
+cd -- "$root"
+exec "$python" -m lumen "$@"

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=Lumen
+GenericName=Image Viewer
+Comment=View, select, copy, crop and save images
+Exec=@ROOT@/bin/lumen %f
+Icon=@ROOT@/lumen/resources/lumen.svg
+Terminal=false
+Categories=Graphics;Viewer;Qt;
+MimeType=image/png;image/jpeg;image/webp;image/gif;image/bmp;image/tiff;image/svg+xml;
+StartupNotify=true
+StartupWMClass=lumen

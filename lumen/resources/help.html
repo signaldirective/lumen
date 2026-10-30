@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: "Noto Sans", "DejaVu Sans", sans-serif; font-size: 10.5pt; line-height: 1.5; }
+  h1 { font-size: 20pt; margin-bottom: 0; }
+  h2 { font-size: 13pt; margin-top: 26px; border-bottom: 1px solid rgba(128,128,128,0.35); padding-bottom: 3px; }
+  h3 { font-size: 11pt; margin-bottom: 2px; }
+  p, li { margin-top: 3px; }
+  code { font-family: "JetBrains Mono", "DejaVu Sans Mono", monospace; font-size: 9.5pt; }
+  kbd { font-family: "JetBrains Mono", "DejaVu Sans Mono", monospace; font-size: 9pt;
+        border: 1px solid rgba(128,128,128,0.5); border-radius: 3px; padding: 0 4px; }
+  table { border-collapse: collapse; margin: 8px 0; }
+  td, th { border: 1px solid rgba(128,128,128,0.35); padding: 4px 9px; text-align: left; vertical-align: top; }
+  th { font-weight: 600; }
+  .note { color: rgba(128,128,128,1); }
+  ul { margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Lumen</h1>
+<p class="note">A small image viewer and light editor.</p>
+
+<h2>Getting started</h2>
+<p>Open an image with <b>File &rsaquo; Open</b> (<kbd>Ctrl</kbd>+<kbd>O</kbd>), drag a file or folder
+onto the window, or launch from a terminal:</p>
+<pre><code>lumen photo.jpg
+lumen ~/Pictures</code></pre>
+<p>Opening a folder starts at the first image and lets you step through the rest.
+The window shows one image at a time; opening another replaces it.</p>
+
+<h2>Navigating</h2>
+<ul>
+  <li><kbd>&larr;</kbd> / <kbd>&rarr;</kbd> go to the previous / next image in the folder.</li>
+  <li>The mouse wheel also steps through images, unless it is set to zoom in Settings.</li>
+  <li><b>Click to advance</b> (off by default) makes a left click go to the next image and a right
+      click go back. It is ignored while a selection tool is armed, while a pasted layer is
+      floating, or while the image is zoomed in far enough to pan.</li>
+  <li>Hidden files are skipped and names are sorted naturally (<code>img2</code> comes before
+      <code>img10</code>). Both can be changed in Settings.</li>
+</ul>
+
+<h2>Zoom and pan</h2>
+<ul>
+  <li><kbd>Ctrl</kbd>+wheel or a pinch gesture zooms around the pointer.</li>
+  <li><kbd>Ctrl</kbd>+<kbd>+</kbd> / <kbd>Ctrl</kbd>+<kbd>-</kbd> zoom in and out,
+      <kbd>Ctrl</kbd>+<kbd>0</kbd> fits the window, <kbd>Ctrl</kbd>+<kbd>1</kbd> is actual size.</li>
+  <li>Middle-drag pans. Left-drag pans too once the image is larger than the window.</li>
+  <li>Double-click toggles between fit and 100%.</li>
+  <li><kbd>F11</kbd> is full screen; <kbd>Esc</kbd> leaves it.</li>
+</ul>
+
+<h2>Selecting</h2>
+<p>Pick a tool from <b>Select &rsaquo; Selection</b>:</p>
+<ul>
+  <li><b>Square</b> (<kbd>S</kbd>) drag a rectangle; hold <kbd>Shift</kbd> for a square,
+      <kbd>Alt</kbd> to draw from the centre.</li>
+  <li><b>Circle</b> (<kbd>C</kbd>) same, but an ellipse or circle.</li>
+  <li><b>Freehand</b> (<kbd>F</kbd>) hold the left button and draw around the area.</li>
+  <li><b>Select &rsaquo; All</b> (<kbd>Ctrl</kbd>+<kbd>A</kbd>) selects the whole canvas.</li>
+  <li><kbd>Esc</kbd> clears the selection and puts the tool away.</li>
+</ul>
+<p>The selection is drawn as animated "marching ants" and stays visible on any image.
+Clicking inside a finished selection with a tool active lifts those pixels so they can be
+dragged; <kbd>Esc</kbd> puts them back.</p>
+
+<h2>Copy, cut, paste and delete</h2>
+<ul>
+  <li><b>Copy</b> (<kbd>Ctrl</kbd>+<kbd>C</kbd>) copies the selection, or the whole image when
+      nothing is selected.</li>
+  <li><b>Cut</b> (<kbd>Ctrl</kbd>+<kbd>X</kbd>) copies and then clears the selection. The cleared
+      area becomes transparent (or white, or a colour you choose in Settings).</li>
+  <li><b>Delete</b> (<kbd>Del</kbd>) clears the selection without copying it.</li>
+  <li><b>Paste</b> (<kbd>Ctrl</kbd>+<kbd>V</kbd>) drops an image onto the canvas as a floating
+      layer. It arrives selected, with the ants around it.</li>
+</ul>
+<h3>Positioning a pasted layer</h3>
+<ul>
+  <li>Drag inside the ants to move it; the arrow keys nudge by one pixel,
+      <kbd>Shift</kbd>+arrow by ten.</li>
+  <li><kbd>Enter</kbd> or a click outside the ants commits it to the canvas.</li>
+  <li><kbd>Esc</kbd> throws it away.</li>
+</ul>
+
+<h2>Cropping</h2>
+<p>Make a selection and choose <b>Select &rsaquo; Crop</b> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>).
+The image is trimmed to the selection's bounding box; anything outside is discarded. With a
+freehand or circle selection the crop is still rectangular. Crop is undoable.</p>
+
+<h2>Saving</h2>
+<ul>
+  <li><b>Save</b> writes over the original file in its own format.</li>
+  <li>Before the first overwrite, Lumen keeps a copy named <code>photo.jpg.bak</code> next to the
+      file (can be turned off in Settings).</li>
+  <li><b>Save As</b> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>) writes a new file as PNG,
+      JPEG, WebP, TIFF or BMP, with a quality setting for the lossy formats.</li>
+  <li>EXIF orientation is applied when an image loads, and the orientation tag is removed when it
+      is saved, so the rotation is not applied twice.</li>
+  <li>An unsaved-change dot appears in the title and status bar. Opening another image, stepping
+      to the next one, or closing asks whether to save, discard or cancel first.</li>
+</ul>
+
+<h2>Animated images</h2>
+<p>GIF and animated WebP files play automatically. <b>View &rsaquo; Pause Animation</b> or
+<kbd>Space</kbd> stops and restarts them. Animation frames cannot be edited in place; Save As
+writes the frame that is currently showing.</p>
+
+<h2>Slideshow</h2>
+<p><kbd>F5</kbd> starts a slideshow at the interval set in Settings. It stops when you make an
+edit, reach the end of the folder without looping, or press <kbd>F5</kbd> again.</p>
+
+<h2>Settings</h2>
+<p><b>File &rsaquo; Settings</b> (<kbd>Ctrl</kbd>+<kbd>,</kbd>). Every change applies immediately.
+Settings are stored in <code>~/.config/lumen/settings.json</code>.</p>
+
+<h3>Appearance</h3>
+<table>
+  <tr><th>Theme</th><td>Follow the system, or force light or dark.</td></tr>
+  <tr><th>Behind transparency</th><td>Checkerboard or a solid colour behind images with alpha.</td></tr>
+  <tr><th>Scaling</th><td>Smooth for photographs, nearest neighbour to keep pixel art crisp.</td></tr>
+  <tr><th>Status bar</th><td>Show or hide name, size, zoom and position.</td></tr>
+</table>
+
+<h3>Navigation</h3>
+<table>
+  <tr><th>Click to advance</th><td>Left click next, right click previous.</td></tr>
+  <tr><th>Arrow keys</th><td><kbd>&larr;</kbd> / <kbd>&rarr;</kbd> step through the folder.</td></tr>
+  <tr><th>Wrap around</th><td>Continue from the other end of the folder.</td></tr>
+  <tr><th>Order / reverse</th><td>Natural name, plain name, modification date or file size.</td></tr>
+  <tr><th>Subfolders, hidden files</th><td>Extend or filter the folder listing.</td></tr>
+  <tr><th>Mouse wheel</th><td>Step through images or zoom. <kbd>Ctrl</kbd>+wheel always zooms.</td></tr>
+  <tr><th>Preload neighbours</th><td>Loads the adjacent images in the background.</td></tr>
+  <tr><th>Slideshow</th><td>Interval, loop and random order.</td></tr>
+  <tr><th>Animated images</th><td>Play automatically and loop.</td></tr>
+</table>
+
+<h3>Editing &amp; Saving</h3>
+<table>
+  <tr><th>Backup on overwrite</th><td>Keep a <code>.bak</code> copy the first time a file is overwritten.</td></tr>
+  <tr><th>Ask before discarding</th><td>Prompt when edits would be lost.</td></tr>
+  <tr><th>Save As default</th><td>Same as the original, PNG or WebP.</td></tr>
+  <tr><th>Lossy quality</th><td>JPEG and WebP quality used when saving.</td></tr>
+  <tr><th>Preserve metadata</th><td>Carry EXIF and the colour profile into the saved file.</td></tr>
+  <tr><th>EXIF rotation</th><td>Apply the camera's orientation tag when loading.</td></tr>
+  <tr><th>Cut/delete fill</th><td>Transparent, white, or a custom colour.</td></tr>
+  <tr><th>Paste position</th><td>Centre of the view, the mouse cursor, or the top-left corner.</td></tr>
+  <tr><th>Deselect after crop</th><td>Clear the ants once a crop is applied.</td></tr>
+  <tr><th>Undo history</th><td>Memory budget for undo snapshots, in megabytes.</td></tr>
+</table>
+
+<h3>Startup</h3>
+<table>
+  <tr><th>Restore window</th><td>Remember the window's size and position.</td></tr>
+  <tr><th>Reopen last folder</th><td>Start in the folder you were last browsing.</td></tr>
+  <tr><th>Single instance</th><td>Open new files in the window that is already running.</td></tr>
+</table>
+
+<h2>Keyboard shortcuts</h2>
+<table>
+  <tr><th>Ctrl+O</th><td>Open</td></tr>
+  <tr><th>Ctrl+S</th><td>Save</td></tr>
+  <tr><th>Ctrl+Shift+S</th><td>Save As</td></tr>
+  <tr><th>Ctrl+,</th><td>Settings</td></tr>
+  <tr><th>Ctrl+Q</th><td>Close Lumen</td></tr>
+  <tr><th>Ctrl+Z / Ctrl+Shift+Z</th><td>Undo / redo</td></tr>
+  <tr><th>Ctrl+X / Ctrl+C / Ctrl+V</th><td>Cut / copy / paste</td></tr>
+  <tr><th>Del</th><td>Clear the selection</td></tr>
+  <tr><th>Ctrl+A</th><td>Select all</td></tr>
+  <tr><th>Ctrl+Shift+A</th><td>Deselect</td></tr>
+  <tr><th>S / C / F</th><td>Square / circle / freehand selection</td></tr>
+  <tr><th>Ctrl+Shift+X</th><td>Crop to selection</td></tr>
+  <tr><th>Ctrl++ / Ctrl+-</th><td>Zoom in / out</td></tr>
+  <tr><th>Ctrl+0 / Ctrl+1</th><td>Fit to window / actual size</td></tr>
+  <tr><th>F11</th><td>Full screen</td></tr>
+  <tr><th>F5</th><td>Slideshow</td></tr>
+  <tr><th>Space</th><td>Pause or play an animation</td></tr>
+  <tr><th>Enter</th><td>Commit a floating layer</td></tr>
+  <tr><th>Esc</th><td>Cancel floating layer, then deselect, then leave full screen</td></tr>
+  <tr><th>F1</th><td>This help</td></tr>
+</table>
+
+<h2>Formats and limits</h2>
+<p>Lumen reads PNG, JPEG, WebP, GIF, BMP, TIFF, ICO, TGA, PNM, XBM/XPM and SVG (SVG opens as a
+static image and cannot be edited). EXIF and ICC data are preserved where the format allows it.
+Editing an animated file is disabled so the animation is not destroyed.</p>
+
+<h2>Something went wrong</h2>
+<ul>
+  <li>If a file will not open, check that it is not corrupt or a camera raw format; Lumen does not
+      decode raw files.</li>
+  <li>If edits are not saved, look for an error dialog — permissions and read-only folders are the
+      usual cause.</li>
+  <li>Settings can be reset from <b>Settings &rsaquo; Restore defaults</b>, and the folder holding
+      them can be opened from the same window.</li>
+</ul>
+
+</body>
+</html>
