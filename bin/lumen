@@ -19,4 +19,10 @@ if [[ ! -x "$python" ]]; then
 fi
 
 cd -- "$root"
+
+# Qt's Wayland text-input backend logs harmless focus warnings on wlroots
+# compositors ("disableSurface ... but 0x0 is focused").  Keep the console
+# quiet unless the user has supplied their own logging rules.
+export QT_LOGGING_RULES="${QT_LOGGING_RULES:-qt.qpa.wayland.textinput=false}"
+
 exec "$python" -m lumen "$@"

@@ -21,6 +21,13 @@ case ":$PATH:" in
   *) printf '\nNote: add ~/.local/bin to PATH to run "lumen" by name.\n' ;;
 esac
 
+# The desktop entry is what lets the XDG portal resolve the app ID, so install
+# it rather than leaving "Open with" to chance.
+applications="$HOME/.local/share/applications"
+mkdir -p "$applications"
+sed "s|@ROOT@|$PWD|g" lumen.desktop > "$applications/lumen.desktop"
+update-desktop-database "$applications" 2>/dev/null || true
+
 cat <<'EOF'
 
 Lumen is ready.
@@ -29,12 +36,7 @@ Lumen is ready.
   Or:        ./bin/lumen [file|folder]
   Tests:     .venv/bin/pytest
 
-The launcher is linked at ~/.local/bin/lumen.
-
-Optional desktop entry:
-
-  mkdir -p ~/.local/share/applications
-  sed "s|@ROOT@|$PWD|g" lumen.desktop > ~/.local/share/applications/lumen.desktop
-  update-desktop-database ~/.local/share/applications 2>/dev/null || true
+  Launcher:  ~/.local/bin/lumen
+  Entry:     ~/.local/share/applications/lumen.desktop
 
 EOF

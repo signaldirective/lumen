@@ -34,16 +34,20 @@ Built with Python and Qt 6 (PySide6).
 ./bin/lumen
 ```
 
-`setup.sh` creates the virtualenv, installs the dependencies, and links the
-launcher into `~/.local/bin/lumen`, so once `~/.local/bin` is on your `PATH` you
-can just run `lumen`. The link points at this checkout, so edits take effect
+`setup.sh` creates the virtualenv, installs the dependencies, links the
+launcher into `~/.local/bin/lumen`, and installs the desktop entry in
+`~/.local/share/applications`. Once `~/.local/bin` is on your `PATH` you can
+just run `lumen`; the link points at this checkout, so edits take effect
 immediately.
 
-To do the link by hand:
+To do it by hand:
 
 ```bash
-mkdir -p ~/.local/bin
+mkdir -p ~/.local/bin ~/.local/share/applications
 ln -sfn /path/to/lumen/bin/lumen ~/.local/bin/lumen
+sed "s|@ROOT@|/path/to/lumen|g" lumen.desktop \
+  > ~/.local/share/applications/lumen.desktop
+update-desktop-database ~/.local/share/applications
 ```
 
 Or manually:
@@ -52,14 +56,6 @@ Or manually:
 python3 -m venv .venv
 .venv/bin/pip install -e '.[dev]'
 ./bin/lumen [file|folder]
-```
-
-To install a desktop entry:
-
-```bash
-mkdir -p ~/.local/share/applications
-sed "s|@ROOT@|$PWD|g" lumen.desktop > ~/.local/share/applications/lumen.desktop
-update-desktop-database ~/.local/share/applications
 ```
 
 ## Using Lumen
